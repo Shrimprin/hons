@@ -1,0 +1,4 @@
+- pnpm化、minimumReleaseAgeの設定
+- eslint, prettierの設定（tailwindにも対応）
+- shadcn/uiの導入
+- prismaの導入
