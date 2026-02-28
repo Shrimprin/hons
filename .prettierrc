@@ -1,3 +1,26 @@
 {
-  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"]
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "arrowParens": "always",
+  "printWidth": 120,
+  "bracketSpacing": true,
+  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"],
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "printWidth": 360
+      }
+    },
+    {
+      "files": ["*.css", "*.scss"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
 }
