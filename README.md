@@ -43,3 +43,4 @@ pnpm dev
 - ワークスペース一括 typecheck: `pnpm typecheck`
 - ワークスペース一括 lint: `pnpm lint`
 - ワークスペース一括 test: `pnpm test`
+- 各レポジトリに対してライブラリをインストール: `pnpm --filter @hons/web add date-fns`
