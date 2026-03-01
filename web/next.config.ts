@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@bookhub/shared"],
+  transpilePackages: ['@bookhub/shared'],
 };
 
 export default nextConfig;

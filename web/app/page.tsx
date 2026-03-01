@@ -1,6 +1,6 @@
-import { extractVolume } from "@bookhub/shared/utils/volume";
+import { extractVolume } from '@bookhub/shared/utils/volume';
 
-const sampleTitle = "ダンジョン飯 14巻";
+const sampleTitle = 'ダンジョン飯 14巻';
 
 export default function Home() {
   const volume = extractVolume(sampleTitle);
@@ -14,7 +14,7 @@ export default function Home() {
       <section className="rounded-lg border p-4">
         <h2 className="mb-2 text-lg font-semibold">共有ユーティリティ検証</h2>
         <p className="text-sm">タイトル: {sampleTitle}</p>
-        <p className="text-sm">抽出巻数: {volume ?? "未検出"}</p>
+        <p className="text-sm">抽出巻数: {volume ?? '未検出'}</p>
       </section>
     </main>
   );
