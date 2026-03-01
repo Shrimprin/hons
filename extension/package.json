@@ -1,0 +1,26 @@
+{
+  "name": "@bookhub/extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "dev:hot": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@bookhub/shared": "workspace:*",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.3",
+    "@types/chrome": "^0.1.30",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "^5",
+    "vite": "^7.1.12"
+  }
+}
