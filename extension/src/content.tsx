@@ -132,7 +132,7 @@ function mountKindleLibraryOverlay() {
         });
         void chrome.runtime.sendMessage({
           type: KINDLE_SYNC_FINISHED_MESSAGE,
-          payload: { success: true, total: allBooks.length },
+          payload: { success: true, total: allBooks.length, autoCloseWindow: autoSync },
         });
       })
       .catch((error: unknown) => {
@@ -140,7 +140,11 @@ function mountKindleLibraryOverlay() {
         console.error('[HONS] Kindle full sync failed', error);
         void chrome.runtime.sendMessage({
           type: KINDLE_SYNC_FINISHED_MESSAGE,
-          payload: { success: false, error: error instanceof Error ? error.message : 'sync failed' },
+          payload: {
+            success: false,
+            error: error instanceof Error ? error.message : 'sync failed',
+            autoCloseWindow: autoSync,
+          },
         });
       })
       .finally(() => {
@@ -225,7 +229,11 @@ function mountKindleLibraryOverlay() {
 
 if (isWebDashboardPage()) {
   console.log('[HONS] web-dashboard bridge mode');
-  initializeWebDashboardBridge();
+  try {
+    initializeWebDashboardBridge();
+  } catch (error) {
+    console.error('[HONS] failed to initialize web dashboard bridge', error);
+  }
 } else if (isKindleLibraryPage()) {
   console.log('[HONS] kindle-library mode');
   mountKindleLibraryOverlay();

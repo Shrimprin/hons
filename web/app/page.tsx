@@ -6,6 +6,7 @@ interface KindleBookSnapshotItem {
   title: string;
   asin: string | null;
   imageUrl: string | null;
+  detailUrl?: string | null;
 }
 
 interface KindleLibrarySnapshot {
@@ -95,9 +96,18 @@ export default function Home() {
 
   const previewBooks = useMemo(() => snapshot?.books ?? [], [snapshot]);
 
+  const resolveBookLink = (book: KindleBookSnapshotItem): string | null => {
+    if (book.detailUrl && book.detailUrl.includes('read.amazon.co.jp/manga/')) {
+      return book.detailUrl;
+    }
+    if (book.asin) return `https://read.amazon.co.jp/manga/${book.asin}`;
+    if (book.detailUrl) return book.detailUrl;
+    return null;
+  };
+
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-6 px-6 py-12 sm:px-10">
-      <h1 className="bg-gradient-to-r from-zinc-900 to-zinc-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent dark:from-zinc-100 dark:to-zinc-400">
+      <h1 className="bg-linear-to-r from-zinc-900 to-zinc-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent dark:from-zinc-100 dark:to-zinc-400">
         HONS
       </h1>
       <p className="text-zinc-600 dark:text-zinc-400">
@@ -135,24 +145,34 @@ export default function Home() {
               key={`${book.asin ?? book.title}-${index}`}
               className="group overflow-hidden rounded-xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:bg-zinc-950"
             >
-              <div className="aspect-[3/4] w-full bg-zinc-100 dark:bg-zinc-900">
-                {book.imageUrl ? (
-                  <>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={book.imageUrl}
-                      alt={book.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition group-hover:scale-[1.02]"
-                    />
-                  </>
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-zinc-500">画像なし</div>
-                )}
-              </div>
-              <div className="p-3">
-                <p className="line-clamp-3 text-sm leading-5 font-medium">{book.title}</p>
-              </div>
+              <button
+                type="button"
+                className="w-full text-left"
+                onClick={() => {
+                  const url = resolveBookLink(book);
+                  if (!url) return;
+                  window.open(url, '_blank', 'noopener,noreferrer');
+                }}
+              >
+                <div className="aspect-3/4 w-full bg-zinc-100 dark:bg-zinc-900">
+                  {book.imageUrl ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={book.imageUrl}
+                        alt={book.title}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition group-hover:scale-[1.02]"
+                      />
+                    </>
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-xs text-zinc-500">画像なし</div>
+                  )}
+                </div>
+                <div className="p-3">
+                  <p className="line-clamp-3 text-sm leading-5 font-medium">{book.title}</p>
+                </div>
+              </button>
             </article>
           ))}
         </div>

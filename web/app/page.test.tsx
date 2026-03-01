@@ -7,7 +7,7 @@ describe('Home page', () => {
   it('renders sync dashboard controls', () => {
     render(<Home />);
 
-    expect(screen.getByRole('heading', { name: 'HONS 同期ダッシュボード' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'HONS' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Kindle 同期を開始' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'スナップショット再取得' })).toBeInTheDocument();
   });

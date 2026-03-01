@@ -36,6 +36,7 @@ export interface KindleSyncFinishedRequest {
     success: boolean;
     total?: number;
     error?: string;
+    autoCloseWindow?: boolean;
   };
 }
 

@@ -9,7 +9,7 @@ import {
   type RuntimeRequest,
 } from './lib/messages';
 
-const autoSyncTabIds = new Set<number>();
+const autoSyncTabs = new Map<number, number | undefined>();
 
 chrome.runtime.onInstalled.addListener(() => {
   console.info('[HONS] background worker ready');
@@ -45,7 +45,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeRequest, _sender, sendResp
 
         const tabId = syncWindow?.tabs?.[0]?.id;
         if (typeof tabId === 'number') {
-          autoSyncTabIds.add(tabId);
+          autoSyncTabs.set(tabId, syncWindow?.id);
           try {
             await chrome.tabs.update(tabId, { autoDiscardable: false });
           } catch {
@@ -70,12 +70,32 @@ chrome.runtime.onMessage.addListener((message: RuntimeRequest, _sender, sendResp
   if (message?.type === KINDLE_SYNC_FINISHED_MESSAGE) {
     void (async () => {
       const tabId = _sender.tab?.id;
-      if (typeof tabId === 'number' && autoSyncTabIds.has(tabId)) {
-        autoSyncTabIds.delete(tabId);
+      const windowIdFromSender = _sender.tab?.windowId;
+      const shouldAutoClose =
+        message.payload.autoCloseWindow === true || (typeof tabId === 'number' && autoSyncTabs.has(tabId));
+      const rememberedWindowId = typeof tabId === 'number' ? autoSyncTabs.get(tabId) : undefined;
+
+      if (typeof tabId === 'number') {
+        autoSyncTabs.delete(tabId);
+      }
+
+      if (typeof tabId === 'number' && shouldAutoClose) {
+        const windowId =
+          typeof windowIdFromSender === 'number'
+            ? windowIdFromSender
+            : typeof rememberedWindowId === 'number'
+              ? rememberedWindowId
+              : undefined;
         try {
-          await chrome.tabs.remove(tabId);
+          if (typeof windowId === 'number') {
+            await chrome.windows.remove(windowId);
+          } else {
+            await chrome.tabs.remove(tabId);
+          }
           console.info('[HONS] closed auto sync tab', {
             tabId,
+            windowId,
+            autoCloseWindow: message.payload.autoCloseWindow,
             success: message.payload.success,
             total: message.payload.total,
           });
@@ -89,4 +109,8 @@ chrome.runtime.onMessage.addListener((message: RuntimeRequest, _sender, sendResp
     })();
     return true;
   }
+});
+
+chrome.tabs.onRemoved.addListener((tabId) => {
+  autoSyncTabs.delete(tabId);
 });

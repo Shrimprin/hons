@@ -20,6 +20,22 @@ const CANDIDATE_SELECTORS = [
 ];
 
 const TITLE_SELECTORS = ["[data-testid*='title']", '[aria-label]', '[title]', 'h1', 'h2', 'h3', 'p'];
+const NOISE_EXACT_LABELS = new Set([
+  'グリッド',
+  '一覧表示',
+  'コンパクトリスト',
+  'すべての作品',
+  'コミック',
+  'サンプル',
+  'フィルタ',
+  '並び替え',
+  '表示設定',
+  'view',
+  'sort',
+  'sample',
+  'grid',
+  'list',
+]);
 
 function normalizeText(value: string | null | undefined): string | null {
   const normalized = value?.replace(/\s+/g, ' ').trim();
@@ -69,6 +85,20 @@ function collectCandidateNodes(): Element[] {
   return Array.from(nodes);
 }
 
+function isNoiseTitle(title: string): boolean {
+  const normalized = title.replace(/\s+/g, ' ').trim().toLowerCase();
+  return NOISE_EXACT_LABELS.has(normalized);
+}
+
+function normalizeDetailUrl(rawHref: string | null, asin: string | null): string | null {
+  if (asin) {
+    return `https://www.amazon.co.jp/dp/${asin}`;
+  }
+  if (!rawHref) return null;
+  if (rawHref.includes('/kindle-library')) return null;
+  return rawHref;
+}
+
 export function extractKindleLibraryBooks(): KindleLibraryBook[] {
   const booksByKey = new Map<string, KindleLibraryBook>();
 
@@ -82,7 +112,7 @@ export function extractKindleLibraryBooks(): KindleLibraryBook[] {
     const image = node.querySelector<HTMLImageElement>('img');
     const directText = normalizeText(node.textContent);
 
-    const detailUrl = anchor?.href ?? null;
+    const rawDetailUrl = anchor?.href ?? null;
     const asin =
       findAsin(node.getAttribute('data-asin')) ??
       findAsin(node.getAttribute('id')) ??
@@ -93,9 +123,12 @@ export function extractKindleLibraryBooks(): KindleLibraryBook[] {
       null;
     const imageUrl = image?.src ?? image?.getAttribute('srcset')?.split(' ')[0] ?? null;
     const resolvedTitle = title ?? normalizeText(anchor?.getAttribute('aria-label')) ?? directText;
+    const detailUrl = normalizeDetailUrl(rawDetailUrl, asin);
 
     if (!resolvedTitle && !asin) continue;
     if ((resolvedTitle ?? '').length > 180) continue;
+    if (resolvedTitle && isNoiseTitle(resolvedTitle)) continue;
+    if (!imageUrl && !asin) continue;
 
     const record: KindleLibraryBook = {
       title: resolvedTitle ?? 'タイトル不明',
