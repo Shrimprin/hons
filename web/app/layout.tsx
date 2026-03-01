@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'BookHub',
+  title: 'HONS',
   description: 'Store-crossing book ownership dashboard',
 };
 

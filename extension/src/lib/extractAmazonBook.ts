@@ -41,3 +41,9 @@ export function extractBookFromAmazonDom(): DomBookInfo | null {
     imageUrl: getCoverImageUrl(),
   };
 }
+
+export function isAmazonProductPage(): boolean {
+  const byPath = /\/(?:dp|gp\/product)\/[A-Z0-9]{10}/i.test(location.pathname);
+  const hasTitle = Boolean(getProductTitle());
+  return byPath || hasTitle;
+}

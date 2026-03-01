@@ -5,9 +5,20 @@ interface KindleLibraryBarProps {
   books: KindleLibraryBook[];
   onRefresh: () => void;
   onCopyJson: () => void;
+  onRunFullSync: () => void;
+  isSyncing: boolean;
+  syncMessage: string;
 }
 
-export function KindleLibraryBar({ count, books, onRefresh, onCopyJson }: KindleLibraryBarProps) {
+export function KindleLibraryBar({
+  count,
+  books,
+  onRefresh,
+  onCopyJson,
+  onRunFullSync,
+  isSyncing,
+  syncMessage,
+}: KindleLibraryBarProps) {
   return (
     <div
       style={{
@@ -28,8 +39,23 @@ export function KindleLibraryBar({ count, books, onRefresh, onCopyJson }: Kindle
         borderBottom: '1px solid #1e293b',
       }}
     >
-      <strong>BookHub</strong>
+      <strong>HONS</strong>
       <span>Kindleライブラリ取得: {count}件</span>
+      <button
+        onClick={onRunFullSync}
+        disabled={isSyncing}
+        style={{
+          border: '1px solid #334155',
+          background: isSyncing ? '#0f172a' : '#1e293b',
+          color: '#e2e8f0',
+          borderRadius: '6px',
+          padding: '4px 8px',
+          cursor: isSyncing ? 'default' : 'pointer',
+          opacity: isSyncing ? 0.75 : 1,
+        }}
+      >
+        {isSyncing ? '同期中...' : '全件同期'}
+      </button>
       <button
         onClick={onRefresh}
         style={{
@@ -59,6 +85,7 @@ export function KindleLibraryBar({ count, books, onRefresh, onCopyJson }: Kindle
       <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         先頭: {books[0]?.title ?? '未取得'}
       </span>
+      <span style={{ whiteSpace: 'nowrap' }}>{syncMessage}</span>
     </div>
   );
 }

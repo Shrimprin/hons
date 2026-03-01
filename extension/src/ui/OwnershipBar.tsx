@@ -34,7 +34,7 @@ export function OwnershipBar({ book, loading }: OwnershipBarProps) {
         boxShadow: '0 4px 12px rgba(0,0,0,0.18)',
       }}
     >
-      <strong style={{ whiteSpace: 'nowrap' }}>BookHub</strong>
+      <strong style={{ whiteSpace: 'nowrap' }}>HONS</strong>
       <span style={{ whiteSpace: 'nowrap' }}>所持: {statusLabel(book, loading)}</span>
       <span
         title={book?.title ?? 'タイトル未検出'}
