@@ -1,8 +1,8 @@
-import { enrichWithGoogleBooks } from "./lib/googleBooks";
-import { ENRICH_BOOK_MESSAGE, type EnrichBookRequest, type EnrichBookResponse } from "./lib/messages";
+import { enrichWithGoogleBooks } from './lib/googleBooks';
+import { ENRICH_BOOK_MESSAGE, type EnrichBookRequest, type EnrichBookResponse } from './lib/messages';
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.info("[BookHub] background worker ready");
+  console.info('[BookHub] background worker ready');
 });
 
 chrome.runtime.onMessage.addListener((message: EnrichBookRequest, _sender, sendResponse) => {
@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((message: EnrichBookRequest, _sender, sendR
       title: message.payload.title,
       asin: message.payload.asin,
       imageUrl: message.payload.imageUrl,
-      ownershipStatus: "checking",
+      ownershipStatus: 'checking',
     });
 
     const response: EnrichBookResponse = { book };

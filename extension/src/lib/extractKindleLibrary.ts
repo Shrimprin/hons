@@ -6,7 +6,7 @@ export interface KindleLibraryBook {
 }
 
 const CANDIDATE_SELECTORS = [
-  "[data-asin]",
+  '[data-asin]',
   "[data-testid*='book']",
   "[data-testid*='item']",
   "[data-testid*='library']",
@@ -16,21 +16,13 @@ const CANDIDATE_SELECTORS = [
   "a[href*='kindle-library']",
   "div[role='listitem']",
   "[role='gridcell']",
-  "li",
+  'li',
 ];
 
-const TITLE_SELECTORS = [
-  "[data-testid*='title']",
-  "[aria-label]",
-  "[title]",
-  "h1",
-  "h2",
-  "h3",
-  "p",
-];
+const TITLE_SELECTORS = ["[data-testid*='title']", '[aria-label]', '[title]', 'h1', 'h2', 'h3', 'p'];
 
 function normalizeText(value: string | null | undefined): string | null {
-  const normalized = value?.replace(/\s+/g, " ").trim();
+  const normalized = value?.replace(/\s+/g, ' ').trim();
   return normalized ? normalized : null;
 }
 
@@ -47,7 +39,7 @@ function pickTitleFromNode(node: Element): string | null {
     if (text && text.length > 1) return text;
   }
 
-  const imageAlt = normalizeText(node.querySelector<HTMLImageElement>("img")?.alt);
+  const imageAlt = normalizeText(node.querySelector<HTMLImageElement>('img')?.alt);
   if (imageAlt) return imageAlt;
 
   return null;
@@ -55,13 +47,13 @@ function pickTitleFromNode(node: Element): string | null {
 
 function findClosestBookNode(element: Element): Element {
   return (
-    element.closest("[data-asin]") ??
+    element.closest('[data-asin]') ??
     element.closest("[data-testid*='book']") ??
     element.closest("[data-testid*='item']") ??
     element.closest("[role='listitem']") ??
     element.closest("[role='gridcell']") ??
     element.closest("div[role='listitem']") ??
-    element.closest("li") ??
+    element.closest('li') ??
     element
   );
 }
@@ -86,33 +78,33 @@ export function extractKindleLibraryBooks(): KindleLibraryBook[] {
       node.querySelector<HTMLAnchorElement>("a[href*='asin=']") ??
       node.querySelector<HTMLAnchorElement>("a[href*='/dp/']") ??
       node.querySelector<HTMLAnchorElement>("a[href*='/gp/product/']") ??
-      node.querySelector<HTMLAnchorElement>("a[href]");
-    const image = node.querySelector<HTMLImageElement>("img");
+      node.querySelector<HTMLAnchorElement>('a[href]');
+    const image = node.querySelector<HTMLImageElement>('img');
     const directText = normalizeText(node.textContent);
 
     const detailUrl = anchor?.href ?? null;
     const asin =
-      findAsin(node.getAttribute("data-asin")) ??
-      findAsin(node.getAttribute("id")) ??
-      findAsin(node.getAttribute("data-testid")) ??
-      findAsin(node.getAttribute("aria-label")) ??
+      findAsin(node.getAttribute('data-asin')) ??
+      findAsin(node.getAttribute('id')) ??
+      findAsin(node.getAttribute('data-testid')) ??
+      findAsin(node.getAttribute('aria-label')) ??
       findAsin(anchor?.href) ??
       findAsin(image?.src) ??
       null;
-    const imageUrl = image?.src ?? image?.getAttribute("srcset")?.split(" ")[0] ?? null;
-    const resolvedTitle = title ?? normalizeText(anchor?.getAttribute("aria-label")) ?? directText;
+    const imageUrl = image?.src ?? image?.getAttribute('srcset')?.split(' ')[0] ?? null;
+    const resolvedTitle = title ?? normalizeText(anchor?.getAttribute('aria-label')) ?? directText;
 
     if (!resolvedTitle && !asin) continue;
-    if ((resolvedTitle ?? "").length > 180) continue;
+    if ((resolvedTitle ?? '').length > 180) continue;
 
     const record: KindleLibraryBook = {
-      title: resolvedTitle ?? "タイトル不明",
+      title: resolvedTitle ?? 'タイトル不明',
       asin,
       imageUrl,
       detailUrl,
     };
 
-    const key = asin ?? `${record.title}|${record.imageUrl ?? ""}`;
+    const key = asin ?? `${record.title}|${record.imageUrl ?? ''}`;
     if (!booksByKey.has(key)) {
       booksByKey.set(key, record);
     }
@@ -122,9 +114,9 @@ export function extractKindleLibraryBooks(): KindleLibraryBook[] {
 }
 
 export function getKindleLibraryDebugInfo() {
-  const dataAsinCount = document.querySelectorAll("[data-asin]").length;
+  const dataAsinCount = document.querySelectorAll('[data-asin]').length;
   const dpLinkCount = document.querySelectorAll("a[href*='/dp/'], a[href*='asin=']").length;
-  const imageCount = document.querySelectorAll("img").length;
+  const imageCount = document.querySelectorAll('img').length;
   const listItemCount = document.querySelectorAll("[role='listitem'], [role='gridcell']").length;
 
   return {
@@ -137,5 +129,5 @@ export function getKindleLibraryDebugInfo() {
 }
 
 export function isKindleLibraryPage(): boolean {
-  return location.hostname === "read.amazon.co.jp" && location.pathname.startsWith("/kindle-library");
+  return location.hostname === 'read.amazon.co.jp' && location.pathname.startsWith('/kindle-library');
 }

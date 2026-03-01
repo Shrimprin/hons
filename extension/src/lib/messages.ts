@@ -1,6 +1,6 @@
-import type { BookMetadata } from "@bookhub/shared/types/book";
+import type { BookMetadata } from '@bookhub/shared/types/book';
 
-export const ENRICH_BOOK_MESSAGE = "bookhub:enrich-book";
+export const ENRICH_BOOK_MESSAGE = 'bookhub:enrich-book';
 
 export interface EnrichBookRequest {
   type: typeof ENRICH_BOOK_MESSAGE;

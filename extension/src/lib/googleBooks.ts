@@ -1,5 +1,5 @@
-import type { BookMetadata } from "@bookhub/shared/types/book";
-import { extractVolume } from "@bookhub/shared/utils/volume";
+import type { BookMetadata } from '@bookhub/shared/types/book';
+import { extractVolume } from '@bookhub/shared/utils/volume';
 
 interface GoogleBooksItem {
   volumeInfo?: {
@@ -16,11 +16,14 @@ interface GoogleBooksResponse {
 }
 
 function normalizeTitle(title: string): string {
-  return title.replace(/\s+/g, " ").replace(/【.*?】/g, "").trim();
+  return title
+    .replace(/\s+/g, ' ')
+    .replace(/【.*?】/g, '')
+    .trim();
 }
 
 export async function enrichWithGoogleBooks(
-  raw: Pick<BookMetadata, "title" | "asin" | "imageUrl" | "ownershipStatus">,
+  raw: Pick<BookMetadata, 'title' | 'asin' | 'imageUrl' | 'ownershipStatus'>,
 ): Promise<BookMetadata> {
   const fallback: BookMetadata = {
     title: raw.title,
@@ -28,15 +31,13 @@ export async function enrichWithGoogleBooks(
     volume: extractVolume(raw.title) ?? undefined,
     asin: raw.asin,
     imageUrl: raw.imageUrl,
-    source: "dom",
+    source: 'dom',
     ownershipStatus: raw.ownershipStatus,
   };
 
   try {
     const query = encodeURIComponent(`intitle:${fallback.normalizedTitle}`);
-    const response = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${query}&langRestrict=ja&maxResults=1`,
-    );
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&langRestrict=ja&maxResults=1`);
     if (!response.ok) return fallback;
 
     const body = (await response.json()) as GoogleBooksResponse;
@@ -52,7 +53,7 @@ export async function enrichWithGoogleBooks(
       normalizedTitle: normalizeTitle(apiTitle || fallback.title),
       volume: extractVolume(apiTitle || fallback.title) ?? fallback.volume,
       imageUrl: apiImage || fallback.imageUrl,
-      source: "google_books",
+      source: 'google_books',
     };
   } catch {
     return fallback;

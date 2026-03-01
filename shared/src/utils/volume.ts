@@ -1,11 +1,7 @@
-const volumePatterns = [
-  /(?:第\s*)?(\d{1,3})\s*巻/u,
-  /(?:vol\.?|volume)\s*(\d{1,3})/iu,
-  /(?:#|No\.)\s*(\d{1,3})/iu,
-];
+const volumePatterns = [/(?:第\s*)?(\d{1,3})\s*巻/u, /(?:vol\.?|volume)\s*(\d{1,3})/iu, /(?:#|No\.)\s*(\d{1,3})/iu];
 
 export function extractVolume(title: string): number | null {
-  const normalized = title.normalize("NFKC");
+  const normalized = title.normalize('NFKC');
 
   for (const pattern of volumePatterns) {
     const matched = normalized.match(pattern);

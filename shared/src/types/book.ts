@@ -1,4 +1,4 @@
-export type OwnershipStatus = "unlinked" | "checking" | "owned" | "not_owned";
+export type OwnershipStatus = 'unlinked' | 'checking' | 'owned' | 'not_owned';
 
 export interface BookMetadata {
   title: string;
@@ -6,6 +6,6 @@ export interface BookMetadata {
   volume?: number;
   asin?: string;
   imageUrl?: string;
-  source: "dom" | "google_books";
+  source: 'dom' | 'google_books';
   ownershipStatus: OwnershipStatus;
 }

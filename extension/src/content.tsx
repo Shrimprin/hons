@@ -1,13 +1,13 @@
-import type { BookMetadata } from "@bookhub/shared/types/book";
-import { extractVolume } from "@bookhub/shared/utils/volume";
-import { createRoot } from "react-dom/client";
-import { extractBookFromAmazonDom } from "./lib/extractAmazonBook";
-import { extractKindleLibraryBooks, getKindleLibraryDebugInfo, isKindleLibraryPage } from "./lib/extractKindleLibrary";
-import { ENRICH_BOOK_MESSAGE, type EnrichBookResponse } from "./lib/messages";
-import { KindleLibraryBar } from "./ui/KindleLibraryBar";
-import { OwnershipBar } from "./ui/OwnershipBar";
+import type { BookMetadata } from '@bookhub/shared/types/book';
+import { extractVolume } from '@bookhub/shared/utils/volume';
+import { createRoot } from 'react-dom/client';
+import { extractBookFromAmazonDom } from './lib/extractAmazonBook';
+import { extractKindleLibraryBooks, getKindleLibraryDebugInfo, isKindleLibraryPage } from './lib/extractKindleLibrary';
+import { ENRICH_BOOK_MESSAGE, type EnrichBookResponse } from './lib/messages';
+import { KindleLibraryBar } from './ui/KindleLibraryBar';
+import { OwnershipBar } from './ui/OwnershipBar';
 
-console.log("[BookHub] content script injected", {
+console.log('[BookHub] content script injected', {
   url: location.href,
   host: location.hostname,
   path: location.pathname,
@@ -19,12 +19,12 @@ function buildDomFallbackBook(): BookMetadata | null {
 
   return {
     title: domBook.title,
-    normalizedTitle: domBook.title.normalize("NFKC"),
+    normalizedTitle: domBook.title.normalize('NFKC'),
     volume: extractVolume(domBook.title) ?? undefined,
     asin: domBook.asin ?? undefined,
     imageUrl: domBook.imageUrl ?? undefined,
-    source: "dom",
-    ownershipStatus: "checking",
+    source: 'dom',
+    ownershipStatus: 'checking',
   };
 }
 
@@ -49,14 +49,14 @@ async function resolveBookMetadata(): Promise<BookMetadata | null> {
 }
 
 function mountOverlay(initialBook: BookMetadata | null) {
-  if (document.getElementById("bookhub-ownership-overlay")) {
+  if (document.getElementById('bookhub-ownership-overlay')) {
     return;
   }
 
-  const mountNode = document.createElement("div");
-  mountNode.id = "bookhub-ownership-overlay";
+  const mountNode = document.createElement('div');
+  mountNode.id = 'bookhub-ownership-overlay';
   document.documentElement.appendChild(mountNode);
-  document.documentElement.style.paddingTop = "44px";
+  document.documentElement.style.paddingTop = '44px';
 
   const root = createRoot(mountNode);
   root.render(<OwnershipBar book={initialBook} loading />);
@@ -64,22 +64,22 @@ function mountOverlay(initialBook: BookMetadata | null) {
   void resolveBookMetadata().then((book) => {
     root.render(<OwnershipBar book={book} loading={false} />);
     if (!book) {
-      console.info("[BookHub] Book info not found on this page");
+      console.info('[BookHub] Book info not found on this page');
       return;
     }
-    console.info("[BookHub] Resolved metadata", book);
+    console.info('[BookHub] Resolved metadata', book);
   });
 }
 
 function mountKindleLibraryOverlay() {
-  if (document.getElementById("bookhub-kindle-library-overlay")) {
+  if (document.getElementById('bookhub-kindle-library-overlay')) {
     return;
   }
 
-  const mountNode = document.createElement("div");
-  mountNode.id = "bookhub-kindle-library-overlay";
+  const mountNode = document.createElement('div');
+  mountNode.id = 'bookhub-kindle-library-overlay';
   document.documentElement.appendChild(mountNode);
-  document.documentElement.style.paddingTop = "44px";
+  document.documentElement.style.paddingTop = '44px';
 
   const root = createRoot(mountNode);
   let books = extractKindleLibraryBooks();
@@ -104,13 +104,13 @@ function mountKindleLibraryOverlay() {
         onRefresh={() => {
           books = extractKindleLibraryBooks();
           persistSnapshot();
-          console.info("[BookHub] Kindle library books (manual refresh)", books.slice(0, 5));
+          console.info('[BookHub] Kindle library books (manual refresh)', books.slice(0, 5));
           render();
         }}
         onCopyJson={() => {
           const payload = JSON.stringify(books, null, 2);
           void navigator.clipboard.writeText(payload);
-          console.info("[BookHub] Copied kindle library JSON");
+          console.info('[BookHub] Copied kindle library JSON');
         }}
       />,
     );
@@ -121,7 +121,7 @@ function mountKindleLibraryOverlay() {
     const changed = next.length !== books.length;
     books = next;
     persistSnapshot();
-    console.info("[BookHub] Kindle library books", {
+    console.info('[BookHub] Kindle library books', {
       reason,
       total: books.length,
       sample: books.slice(0, 5),
@@ -141,12 +141,12 @@ function mountKindleLibraryOverlay() {
   );
 
   const observer = new MutationObserver(() => {
-    refreshBooks("mutation-observer");
+    refreshBooks('mutation-observer');
   });
   observer.observe(document.body, { childList: true, subtree: true });
 
   window.addEventListener(
-    "beforeunload",
+    'beforeunload',
     () => {
       observer.disconnect();
       retryTimerIds.forEach((id) => window.clearTimeout(id));
@@ -155,14 +155,14 @@ function mountKindleLibraryOverlay() {
     { once: true },
   );
 
-  refreshBooks("initial");
+  refreshBooks('initial');
   render();
 }
 
 if (isKindleLibraryPage()) {
-  console.log("[BookHub] kindle-library mode");
+  console.log('[BookHub] kindle-library mode');
   mountKindleLibraryOverlay();
 } else {
-  console.log("[BookHub] product-page mode");
+  console.log('[BookHub] product-page mode');
   mountOverlay(buildDomFallbackBook());
 }

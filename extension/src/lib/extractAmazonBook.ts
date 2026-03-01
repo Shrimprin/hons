@@ -12,23 +12,22 @@ function getAsinFromUrl(): string | null {
 function getAsinFromInput(): string | null {
   const candidates = [
     document.querySelector<HTMLInputElement>('input[name="ASIN"]')?.value,
-    document.querySelector<HTMLInputElement>("#ASIN")?.value,
+    document.querySelector<HTMLInputElement>('#ASIN')?.value,
   ];
   return candidates.find(Boolean)?.toUpperCase() ?? null;
 }
 
 function getProductTitle(): string | null {
   const titleElement =
-    document.querySelector<HTMLElement>("#productTitle") ??
-    document.querySelector<HTMLElement>("#ebooksProductTitle");
+    document.querySelector<HTMLElement>('#productTitle') ?? document.querySelector<HTMLElement>('#ebooksProductTitle');
   return titleElement?.textContent?.trim() ?? null;
 }
 
 function getCoverImageUrl(): string | null {
   const image =
-    document.querySelector<HTMLImageElement>("#imgBlkFront") ??
-    document.querySelector<HTMLImageElement>("#landingImage") ??
-    document.querySelector<HTMLImageElement>("#ebooksImgBlkFront");
+    document.querySelector<HTMLImageElement>('#imgBlkFront') ??
+    document.querySelector<HTMLImageElement>('#landingImage') ??
+    document.querySelector<HTMLImageElement>('#ebooksImgBlkFront');
   return image?.src ?? null;
 }
 
