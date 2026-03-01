@@ -1,7 +1,6 @@
-# hons
+# BookHub Monorepo
 
-`Next.js`（App Router）ベースの Web アプリケーションです。  
-UI は Tailwind CSS + shadcn/ui を利用し、コード品質管理として ESLint / Prettier / Vitest / CI を導入しています。
+BookHub の技術検証用モノレポです。Web ダッシュボードとブラウザ拡張機能が同一リポジトリで共存し、`shared/` で型やロジックを共有します。
 
 ## 動作要件
 
@@ -19,7 +18,7 @@ UI は Tailwind CSS + shadcn/ui を利用し、コード品質管理として ES
 pnpm install
 ```
 
-2. 開発サーバーを起動
+2. Web 開発サーバーを起動
 
 ```bash
 pnpm dev
@@ -28,15 +27,20 @@ pnpm dev
 3. ブラウザで確認  
    `http://localhost:3000`
 
+## リポジトリ構成
+
+- `web/`: Next.js (App Router) ダッシュボード
+- `extension/`: Vite + React + CRXJS 拡張機能プロトタイプ
+- `shared/`: 共通型・ユーティリティ
+
 ## よく使うコマンド
 
-- 開発サーバー: `pnpm dev`
-- 本番ビルド: `pnpm build`
-- 本番起動: `pnpm start`
-- Lint: `pnpm lint`
-- Lint 自動修正: `pnpm lint:fix`
-- Format: `pnpm format`
-- Format チェック: `pnpm format:check`
-- Test: `pnpm test`
-- Test(Watch): `pnpm test:watch`
-- 一括修正: `pnpm fix`
+- Web 開発サーバー: `pnpm dev`
+- Web ビルド: `pnpm build:web`
+- 拡張機能開発ビルド（Chromeに読み込む `dist` を自動更新）: `pnpm dev:extension`
+- 拡張機能ホットリロード開発（`localhost:5173` 必須）: `pnpm dev:extension:hot`
+- 拡張機能本番ビルド: `pnpm build:extension`
+- ワークスペース一括 typecheck: `pnpm typecheck`
+- ワークスペース一括 lint: `pnpm lint`
+- ワークスペース一括 test: `pnpm test`
+- 各レポジトリに対してライブラリをインストール: `pnpm --filter @hons/web add date-fns`

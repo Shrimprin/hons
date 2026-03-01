@@ -1,0 +1,43 @@
+{
+  "reason": "delayed-retry-5000ms",
+  "total": 54,
+  "sample": [
+    {
+      "title": "すべての作品",
+      "asin": null,
+      "imageUrl": null,
+      "detailUrl": null
+    },
+    {
+      "title": "本",
+      "asin": null,
+      "imageUrl": null,
+      "detailUrl": null
+    },
+    {
+      "title": "コミック",
+      "asin": null,
+      "imageUrl": null,
+      "detailUrl": null
+    },
+    {
+      "title": "サンプル",
+      "asin": null,
+      "imageUrl": null,
+      "detailUrl": null
+    },
+    {
+      "title": "ランウェイで笑って（１０） (週刊少年マガジンコミックス) (Japanese Edition)",
+      "asin": "B07QHJ1GDF",
+      "imageUrl": "https://m.media-amazon.com/images/I/51sU8un0PnL._SY400_.jpg",
+      "detailUrl": null
+    }
+  ],
+  "debug": {
+    "dataAsinCount": 0,
+    "dpLinkCount": 0,
+    "imageCount": 51,
+    "listItemCount": 50,
+    "bodyTextLength": 5308
+  }
+}
