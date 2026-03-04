@@ -5,7 +5,7 @@ import {
   type ExtensionMessage,
   type KindleLibrarySnapshot,
   type SyncFinishedPayload,
-} from '@bookhub/shared';
+} from '@hons/shared';
 import {
   DASHBOARD_SYNC_FINISHED_MESSAGE,
   OPEN_KINDLE_SYNC_TAB_MESSAGE,
@@ -13,7 +13,7 @@ import {
   type OpenKindleSyncTabResponse,
 } from './messages';
 
-const SNAPSHOT_KEY = 'bookhubKindleLibrarySnapshot';
+const SNAPSHOT_KEY = 'honsKindleLibrarySnapshot';
 const BRIDGE_FLAG = '__honsBridgeInitialized__';
 
 function postToPage(payload: Omit<ExtensionMessage, 'source'>) {

@@ -1,5 +1,5 @@
-import type { BookMetadata } from '@bookhub/shared/types/book';
-import { extractVolume } from '@bookhub/shared/utils/volume';
+import type { BookMetadata } from '@hons/shared/types/book';
+import { extractVolume } from '@hons/shared/utils/volume';
 
 interface GoogleBooksItem {
   volumeInfo?: {

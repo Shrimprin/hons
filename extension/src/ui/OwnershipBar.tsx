@@ -1,4 +1,4 @@
-import type { BookMetadata } from '@bookhub/shared/types/book';
+import type { BookMetadata } from '@hons/shared/types/book';
 
 interface OwnershipBarProps {
   book: BookMetadata | null;

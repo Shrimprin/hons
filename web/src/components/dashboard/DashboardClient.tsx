@@ -6,7 +6,7 @@ import { BooksSection } from '@/components/dashboard/BooksSection';
 import { SyncControls } from '@/components/dashboard/SyncSection';
 import type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/types/dashboard';
 import type { SyncStatus } from '@/types/sync';
-import { MESSAGE_TYPE, SOURCE } from '@bookhub/shared';
+import { MESSAGE_TYPE, SOURCE } from '@hons/shared';
 
 function requestSnapshot() {
   // postMessage is handled by webDashboardBridge.ts

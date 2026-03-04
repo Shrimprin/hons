@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener((message: RuntimeRequest, _sender, sendResp
   }
 
   if (message?.type === OPEN_KINDLE_SYNC_TAB_MESSAGE) {
-    const url = 'https://read.amazon.co.jp/kindle-library?tabView=all&sortType=recency&bookhub_sync=1';
+    const url = 'https://read.amazon.co.jp/kindle-library?tabView=all&sortType=recency&hons_sync=1';
 
     void (async () => {
       try {

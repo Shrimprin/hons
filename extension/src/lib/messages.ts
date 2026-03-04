@@ -1,9 +1,9 @@
-import type { BookMetadata } from '@bookhub/shared/types/book';
+import type { BookMetadata } from '@hons/shared/types/book';
 
-export const ENRICH_BOOK_MESSAGE = 'bookhub:enrich-book';
-export const OPEN_KINDLE_SYNC_TAB_MESSAGE = 'bookhub:open-kindle-sync-tab';
-export const KINDLE_SYNC_FINISHED_MESSAGE = 'bookhub:kindle-sync-finished';
-export const DASHBOARD_SYNC_FINISHED_MESSAGE = 'bookhub:dashboard-sync-finished';
+export const ENRICH_BOOK_MESSAGE = 'hons:enrich-book';
+export const OPEN_KINDLE_SYNC_TAB_MESSAGE = 'hons:open-kindle-sync-tab';
+export const KINDLE_SYNC_FINISHED_MESSAGE = 'hons:kindle-sync-finished';
+export const DASHBOARD_SYNC_FINISHED_MESSAGE = 'hons:dashboard-sync-finished';
 
 export interface EnrichBookRequest {
   type: typeof ENRICH_BOOK_MESSAGE;

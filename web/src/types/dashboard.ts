@@ -1,1 +1,1 @@
-export type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@bookhub/shared';
+export type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@hons/shared';

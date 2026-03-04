@@ -1,5 +1,5 @@
 {
-  "name": "bookhub",
+  "name": "hons",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.27.0",
@@ -9,22 +9,22 @@
     "shared"
   ],
   "scripts": {
-    "dev": "pnpm --filter @bookhub/web dev",
-    "build": "pnpm --filter @bookhub/web build",
-    "start": "pnpm --filter @bookhub/web start",
-    "dev:web": "pnpm --filter @bookhub/web dev",
-    "build:web": "pnpm --filter @bookhub/web build",
-    "test:web": "pnpm --filter @bookhub/web test",
-    "dev:extension": "pnpm --filter @bookhub/extension dev",
-    "dev:extension:hot": "pnpm --filter @bookhub/extension dev:hot",
-    "build:extension": "pnpm --filter @bookhub/extension build",
+    "dev": "pnpm --filter @hons/web dev",
+    "build": "pnpm --filter @hons/web build",
+    "start": "pnpm --filter @hons/web start",
+    "dev:web": "pnpm --filter @hons/web dev",
+    "build:web": "pnpm --filter @hons/web build",
+    "test:web": "pnpm --filter @hons/web test",
+    "dev:extension": "pnpm --filter @hons/extension dev",
+    "dev:extension:hot": "pnpm --filter @hons/extension dev:hot",
+    "build:extension": "pnpm --filter @hons/extension build",
     "typecheck": "pnpm -r --if-present typecheck",
     "fix": "pnpm -r --if-present fix",
     "lint": "pnpm -r --if-present lint",
     "format": "pnpm -r --if-present format",
     "format:check": "pnpm -r --if-present format:check",
     "test": "pnpm -r --if-present test",
-    "build:all": "pnpm --filter @bookhub/web build && pnpm --filter @bookhub/extension build"
+    "build:all": "pnpm --filter @hons/web build && pnpm --filter @hons/extension build"
   },
   "devDependencies": {
     "prettier": "^3.8.1",

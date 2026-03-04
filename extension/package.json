@@ -1,5 +1,5 @@
 {
-  "name": "@bookhub/extension",
+  "name": "@hons/extension",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -17,7 +17,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@bookhub/shared": "workspace:*",
+    "@hons/shared": "workspace:*",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

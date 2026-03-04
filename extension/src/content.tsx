@@ -1,5 +1,5 @@
-import type { BookMetadata } from '@bookhub/shared/types/book';
-import { extractVolume } from '@bookhub/shared/utils/volume';
+import type { BookMetadata } from '@hons/shared/types/book';
+import { extractVolume } from '@hons/shared/utils/volume';
 import { createRoot } from 'react-dom/client';
 import { extractBookFromAmazonDom, isAmazonProductPage } from './lib/extractAmazonBook';
 import { extractKindleLibraryBooks, getKindleLibraryDebugInfo, isKindleLibraryPage } from './lib/extractKindleLibrary';
@@ -15,7 +15,7 @@ console.log('[HONS] content script injected', {
   path: location.pathname,
 });
 
-const SNAPSHOT_KEY = 'bookhubKindleLibrarySnapshot';
+const SNAPSHOT_KEY = 'honsKindleLibrarySnapshot';
 
 function isWebDashboardPage(): boolean {
   if (location.hostname === 'localhost' && location.port === '3000') return true;
@@ -59,12 +59,12 @@ async function resolveBookMetadata(): Promise<BookMetadata | null> {
 }
 
 function mountOverlay(initialBook: BookMetadata | null) {
-  if (document.getElementById('bookhub-ownership-overlay')) {
+  if (document.getElementById('hons-ownership-overlay')) {
     return;
   }
 
   const mountNode = document.createElement('div');
-  mountNode.id = 'bookhub-ownership-overlay';
+  mountNode.id = 'hons-ownership-overlay';
   document.documentElement.appendChild(mountNode);
   document.documentElement.style.paddingTop = '44px';
 
@@ -82,12 +82,12 @@ function mountOverlay(initialBook: BookMetadata | null) {
 }
 
 function mountKindleLibraryOverlay() {
-  if (document.getElementById('bookhub-kindle-library-overlay')) {
+  if (document.getElementById('hons-kindle-library-overlay')) {
     return;
   }
 
   const mountNode = document.createElement('div');
-  mountNode.id = 'bookhub-kindle-library-overlay';
+  mountNode.id = 'hons-kindle-library-overlay';
   document.documentElement.appendChild(mountNode);
   document.documentElement.style.paddingTop = '44px';
 
@@ -96,7 +96,7 @@ function mountKindleLibraryOverlay() {
   let retryTimerIds: number[] = [];
   let isSyncing = false;
   let syncMessage = '待機中';
-  const autoSync = new URLSearchParams(location.search).get('bookhub_sync') === '1';
+  const autoSync = new URLSearchParams(location.search).get('hons_sync') === '1';
 
   const persistSnapshot = () => {
     void chrome.storage.local.set({
