@@ -4,8 +4,14 @@ import {
   type DashboardRequestMessage,
   type ExtensionMessage,
   type KindleLibrarySnapshot,
+  type SyncFinishedPayload,
 } from '@bookhub/shared';
-import { OPEN_KINDLE_SYNC_TAB_MESSAGE, type OpenKindleSyncTabResponse } from './messages';
+import {
+  DASHBOARD_SYNC_FINISHED_MESSAGE,
+  OPEN_KINDLE_SYNC_TAB_MESSAGE,
+  type DashboardSyncFinishedBroadcast,
+  type OpenKindleSyncTabResponse,
+} from './messages';
 
 const SNAPSHOT_KEY = 'bookhubKindleLibrarySnapshot';
 const BRIDGE_FLAG = '__honsBridgeInitialized__';
@@ -92,8 +98,22 @@ export function initializeWebDashboardBridge() {
     }
   };
 
+  const onRuntimeMessage = (message: DashboardSyncFinishedBroadcast) => {
+    if (message?.type !== DASHBOARD_SYNC_FINISHED_MESSAGE) return;
+    const payload: SyncFinishedPayload = {
+      success: message.payload.success,
+      total: message.payload.total,
+      error: message.payload.error,
+    };
+    postToPage({
+      type: MESSAGE_TYPE.SYNC_FINISHED,
+      payload,
+    });
+  };
+
   try {
     window.addEventListener('message', onMessage);
+    chrome.runtime.onMessage.addListener(onRuntimeMessage);
     win[BRIDGE_FLAG] = true;
   } catch (error) {
     console.warn('[HONS] failed to initialize dashboard bridge', error);

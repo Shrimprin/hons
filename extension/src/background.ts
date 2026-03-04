@@ -1,8 +1,10 @@
 import { enrichWithGoogleBooks } from './lib/googleBooks';
 import {
+  DASHBOARD_SYNC_FINISHED_MESSAGE,
   ENRICH_BOOK_MESSAGE,
   KINDLE_SYNC_FINISHED_MESSAGE,
   OPEN_KINDLE_SYNC_TAB_MESSAGE,
+  type DashboardSyncFinishedBroadcast,
   type EnrichBookResponse,
   type KindleSyncFinishedResponse,
   type OpenKindleSyncTabResponse,
@@ -102,6 +104,29 @@ chrome.runtime.onMessage.addListener((message: RuntimeRequest, _sender, sendResp
         } catch (error) {
           console.warn('[HONS] failed to close auto sync tab', { tabId, error });
         }
+      }
+
+      const dashboardPayload: DashboardSyncFinishedBroadcast = {
+        type: DASHBOARD_SYNC_FINISHED_MESSAGE,
+        payload: {
+          success: message.payload.success,
+          total: message.payload.total,
+          error: message.payload.error,
+        },
+      };
+
+      try {
+        const dashboardTabs = await chrome.tabs.query({
+          url: ['http://localhost:3000/*', 'http://127.0.0.1:3000/*'],
+        });
+        await Promise.allSettled(
+          dashboardTabs
+            .map((tab) => tab.id)
+            .filter((id): id is number => typeof id === 'number')
+            .map((id) => chrome.tabs.sendMessage(id, dashboardPayload)),
+        );
+      } catch (error) {
+        console.warn('[HONS] failed to notify dashboard sync completion', error);
       }
 
       const response: KindleSyncFinishedResponse = { ok: true };

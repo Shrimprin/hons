@@ -8,6 +8,7 @@ export const MESSAGE_TYPE = {
   START_SYNC: 'BOOKHUB_START_SYNC',
   SNAPSHOT: 'BOOKHUB_SNAPSHOT',
   START_SYNC_RESULT: 'BOOKHUB_START_SYNC_RESULT',
+  SYNC_FINISHED: 'BOOKHUB_SYNC_FINISHED',
 } as const;
 
 export type KindleBookSnapshotItem = {
@@ -49,4 +50,16 @@ export type StartSyncResultMessage = {
   payload: StartSyncResultPayload;
 };
 
-export type ExtensionMessage = ExtensionSnapshotMessage | StartSyncResultMessage;
+export type SyncFinishedPayload = {
+  success: boolean;
+  total?: number;
+  error?: string;
+};
+
+export type SyncFinishedMessage = {
+  source: typeof SOURCE.EXTENSION;
+  type: typeof MESSAGE_TYPE.SYNC_FINISHED;
+  payload: SyncFinishedPayload;
+};
+
+export type ExtensionMessage = ExtensionSnapshotMessage | StartSyncResultMessage | SyncFinishedMessage;

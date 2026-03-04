@@ -3,6 +3,7 @@ import type { BookMetadata } from '@bookhub/shared/types/book';
 export const ENRICH_BOOK_MESSAGE = 'bookhub:enrich-book';
 export const OPEN_KINDLE_SYNC_TAB_MESSAGE = 'bookhub:open-kindle-sync-tab';
 export const KINDLE_SYNC_FINISHED_MESSAGE = 'bookhub:kindle-sync-finished';
+export const DASHBOARD_SYNC_FINISHED_MESSAGE = 'bookhub:dashboard-sync-finished';
 
 export interface EnrichBookRequest {
   type: typeof ENRICH_BOOK_MESSAGE;
@@ -42,6 +43,15 @@ export interface KindleSyncFinishedRequest {
 
 export interface KindleSyncFinishedResponse {
   ok: boolean;
+}
+
+export interface DashboardSyncFinishedBroadcast {
+  type: typeof DASHBOARD_SYNC_FINISHED_MESSAGE;
+  payload: {
+    success: boolean;
+    total?: number;
+    error?: string;
+  };
 }
 
 export type RuntimeRequest = EnrichBookRequest | OpenKindleSyncTabRequest | KindleSyncFinishedRequest;

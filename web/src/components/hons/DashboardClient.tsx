@@ -4,11 +4,12 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { BooksSection } from '@/components/hons/BooksSection';
 import { SyncControls } from '@/components/hons/SyncControl';
+import type { SyncStatus } from '@/components/hons/SyncControl';
 import type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/components/hons/types';
 import { MESSAGE_TYPE, SOURCE } from '@bookhub/shared';
 
 function requestSnapshot() {
-  // webDashboardBridge.tsのonMessageを呼び出す
+  // postMessageはwebDashboardBridge.tsのonMessageを呼び出す
   window.postMessage(
     {
       source: SOURCE.WEB,
@@ -40,7 +41,7 @@ function resolveBookLink(book: KindleBookSnapshotItem): string | null {
 export function DashboardClient() {
   const [snapshot, setSnapshot] = useState<KindleLibrarySnapshot | null>(null); // TODO: 将来的にはKindle以外の型を追加する
   const [statusText, setStatusText] = useState('拡張機能の応答待ち');
-  const [loading, setLoading] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
 
   useEffect(() => {
     const onMessage = (event: MessageEvent<ExtensionMessage>) => {
@@ -58,24 +59,44 @@ export function DashboardClient() {
       if (event.data.type === MESSAGE_TYPE.START_SYNC_RESULT) {
         if (event.data.payload.ok) {
           setStatusText(`Kindle 同期タブを起動しました (tab: ${event.data.payload.tabId ?? '-'})`);
+          setSyncStatus('syncing');
+          requestSnapshot();
         } else {
           setStatusText(`同期開始に失敗: ${event.data.payload.error ?? 'unknown error'}`);
+          setSyncStatus('idle');
         }
+        return;
+      }
+
+      if (event.data.type === MESSAGE_TYPE.SYNC_FINISHED) {
+        if (event.data.payload.success) {
+          setStatusText(`同期完了: ${event.data.payload.total ?? 0}冊`);
+          setSyncStatus('completed');
+        } else {
+          setStatusText(`同期失敗: ${event.data.payload.error ?? 'unknown error'}`);
+          setSyncStatus('idle');
+        }
+        requestSnapshot();
       }
     };
 
     window.addEventListener('message', onMessage);
     requestSnapshot();
 
+    return () => {
+      window.removeEventListener('message', onMessage);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (syncStatus !== 'syncing') return;
     const timer = window.setInterval(() => {
       requestSnapshot();
     }, 5000);
-
     return () => {
-      window.removeEventListener('message', onMessage);
       window.clearInterval(timer);
     };
-  }, []);
+  }, [syncStatus]);
 
   const books = useMemo(() => snapshot?.books ?? [], [snapshot]);
 
@@ -89,12 +110,11 @@ export function DashboardClient() {
       </p>
 
       <SyncControls
-        loading={loading}
+        syncStatus={syncStatus}
         statusText={statusText}
         onStartSync={() => {
-          setLoading(true);
+          setSyncStatus('syncing');
           requestStartSync();
-          window.setTimeout(() => setLoading(false), 1000);
         }}
         onRefreshSnapshot={requestSnapshot}
       />
