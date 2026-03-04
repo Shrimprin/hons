@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { BooksSection } from '@/components/hons/BooksSection';
-import { SyncControls } from '@/components/hons/SyncControl';
 import type { SyncStatus } from '@/components/hons/SyncControl';
+import { SyncControls } from '@/components/hons/SyncControl';
 import type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/components/hons/types';
 import { MESSAGE_TYPE, SOURCE } from '@bookhub/shared';
 
