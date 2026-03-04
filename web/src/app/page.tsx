@@ -1,4 +1,4 @@
-import { DashboardClient } from '@/components/hons/DashboardClient';
+import { DashboardClient } from '@/components/dashboard/DashboardClient';
 
 export default function Home() {
   return <DashboardClient />;

@@ -1,8 +1,8 @@
+import { BookCard } from '@/components/dashboard/BookCard';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/types/dashboard';
 import { parseISO } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
-import { BookCard } from '@/components/hons/BookCard';
-import type { KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/components/hons/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface BooksSectionProps {
   snapshot: KindleLibrarySnapshot | null;

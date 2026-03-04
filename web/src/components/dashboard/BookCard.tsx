@@ -1,5 +1,5 @@
-import type { KindleBookSnapshotItem } from '@/components/hons/types';
 import { Card } from '@/components/ui/card';
+import type { KindleBookSnapshotItem } from '@/types/dashboard';
 import Image from 'next/image';
 
 type BookCardProps = {

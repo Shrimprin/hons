@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-export type SyncStatus = 'idle' | 'syncing' | 'completed';
+import type { SyncStatus } from '@/types/sync';
 
 type SyncControlsProps = {
   syncStatus: SyncStatus;

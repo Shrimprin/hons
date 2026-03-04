@@ -2,14 +2,14 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { BooksSection } from '@/components/hons/BooksSection';
-import type { SyncStatus } from '@/components/hons/SyncControl';
-import { SyncControls } from '@/components/hons/SyncControl';
-import type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/components/hons/types';
+import { BooksSection } from '@/components/dashboard/BooksSection';
+import { SyncControls } from '@/components/dashboard/SyncControl';
+import type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/types/dashboard';
+import type { SyncStatus } from '@/types/sync';
 import { MESSAGE_TYPE, SOURCE } from '@bookhub/shared';
 
 function requestSnapshot() {
-  // postMessageはwebDashboardBridge.tsのonMessageを呼び出す
+  // postMessage is handled by webDashboardBridge.ts
   window.postMessage(
     {
       source: SOURCE.WEB,
@@ -33,13 +33,13 @@ function resolveBookLink(book: KindleBookSnapshotItem): string | null {
   if (book.detailUrl && book.detailUrl.includes('read.amazon.co.jp/manga/')) {
     return book.detailUrl;
   }
-  if (book.asin) return `https://read.amazon.co.jp/manga/${book.asin}`; // TODO: 漫画以外にも対応する
+  if (book.asin) return `https://read.amazon.co.jp/manga/${book.asin}`;
   if (book.detailUrl) return book.detailUrl;
   return null;
 }
 
 export function DashboardClient() {
-  const [snapshot, setSnapshot] = useState<KindleLibrarySnapshot | null>(null); // TODO: 将来的にはKindle以外の型を追加する
+  const [snapshot, setSnapshot] = useState<KindleLibrarySnapshot | null>(null);
   const [statusText, setStatusText] = useState('拡張機能の応答待ち');
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
 
