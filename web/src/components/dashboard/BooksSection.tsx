@@ -1,8 +1,8 @@
 import { BookCard } from '@/components/dashboard/BookCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/types/dashboard';
-import { parseISO } from 'date-fns';
-import { formatInTimeZone } from 'date-fns-tz';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+import { ja } from 'date-fns/locale';
 
 interface BooksSectionProps {
   snapshot: KindleLibrarySnapshot | null;
@@ -15,7 +15,7 @@ function formatTakenAt(takenAt: string | undefined): string {
   const date = parseISO(takenAt);
   if (Number.isNaN(date.getTime())) return '未同期';
 
-  return formatInTimeZone(date, 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
+  return formatDistanceToNow(date, { addSuffix: true, locale: ja });
 }
 
 export function BooksSection({ snapshot, books, onOpenBook }: BooksSectionProps) {
