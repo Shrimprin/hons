@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./types/book": "./src/types/book.ts",
+    "./types/bridge": "./src/types/bridge.ts",
     "./utils/volume": "./src/utils/volume.ts"
   },
   "scripts": {

@@ -19,6 +19,7 @@
     "dev:extension:hot": "pnpm --filter @bookhub/extension dev:hot",
     "build:extension": "pnpm --filter @bookhub/extension build",
     "typecheck": "pnpm -r --if-present typecheck",
+    "fix": "pnpm -r --if-present fix",
     "lint": "pnpm -r --if-present lint",
     "format": "pnpm -r --if-present format",
     "format:check": "pnpm -r --if-present format:check",

@@ -3,10 +3,22 @@ import eslintConfigNextTypeScript from 'eslint-config-next/typescript';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import { defineConfig } from 'eslint/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const tsconfigRootDir = path.dirname(fileURLToPath(import.meta.url));
 
 const eslintConfig = defineConfig([
   ...eslintConfigNextCoreWebVitals,
   ...eslintConfigNextTypeScript,
+  {
+    files: ['**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}'],
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir,
+      },
+    },
+  },
   {
     ignores: ['node_modules/**', '.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
   },
@@ -20,7 +32,7 @@ const eslintConfig = defineConfig([
     },
     settings: {
       'better-tailwindcss': {
-        entryPoint: 'app/globals.css',
+        entryPoint: 'src/app/globals.css',
       },
     },
   },

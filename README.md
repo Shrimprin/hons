@@ -30,6 +30,9 @@ pnpm dev
 ## リポジトリ構成
 
 - `web/`: Next.js (App Router) ダッシュボード
+  - `web/src/app`: ルーティングとレイアウト
+  - `web/src/components`: UI コンポーネント
+  - `web/src/lib`: ユーティリティ関数
 - `extension/`: Vite + React + CRXJS 拡張機能プロトタイプ
 - `shared/`: 共通型・ユーティリティ
 
