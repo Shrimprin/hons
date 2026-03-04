@@ -1,10 +1,11 @@
 import type { KindleBookSnapshotItem } from '@/components/hons/types';
 import { Card } from '@/components/ui/card';
+import Image from 'next/image';
 
-interface BookCardProps {
+type BookCardProps = {
   book: KindleBookSnapshotItem;
   onOpen: (book: KindleBookSnapshotItem) => void;
-}
+};
 
 export function BookCard({ book, onOpen }: BookCardProps) {
   return (
@@ -12,15 +13,16 @@ export function BookCard({ book, onOpen }: BookCardProps) {
       <button type="button" className="w-full text-left" onClick={() => onOpen(book)}>
         <div className="aspect-3/4 w-full bg-zinc-100 dark:bg-zinc-900">
           {book.imageUrl ? (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+            <div className="relative h-full w-full">
+              <Image
                 src={book.imageUrl}
                 alt={book.title}
-                loading="lazy"
-                className="h-full w-full object-cover transition group-hover:scale-[1.02]"
+                fill
+                unoptimized
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-cover transition group-hover:scale-[1.02]"
               />
-            </>
+            </div>
           ) : (
             <div className="flex h-full items-center justify-center text-xs text-zinc-500">画像なし</div>
           )}
