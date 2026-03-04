@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { BooksSection } from '@/components/dashboard/BooksSection';
-import { SyncControls } from '@/components/dashboard/SyncControl';
+import { SyncControls } from '@/components/dashboard/SyncSection';
 import type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/types/dashboard';
 import type { SyncStatus } from '@/types/sync';
 import { MESSAGE_TYPE, SOURCE } from '@bookhub/shared';
