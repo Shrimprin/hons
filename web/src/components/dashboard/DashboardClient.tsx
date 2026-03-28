@@ -3,13 +3,13 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { BooksSection } from '@/components/dashboard/BooksSection';
-import { SyncControls } from '@/components/dashboard/SyncSection';
+import { Header } from '@/components/dashboard/Header';
+import { StatusBar } from '@/components/dashboard/SyncSection';
 import type { ExtensionMessage, KindleBookSnapshotItem, KindleLibrarySnapshot } from '@/types/dashboard';
 import type { SyncStatus } from '@/types/sync';
 import { MESSAGE_TYPE, SOURCE } from '@hons/shared';
 
 function requestSnapshot() {
-  // postMessage is handled by webDashboardBridge.ts
   window.postMessage(
     {
       source: SOURCE.WEB,
@@ -101,17 +101,9 @@ export function DashboardClient() {
   const books = useMemo(() => snapshot?.books ?? [], [snapshot]);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-6 px-6 py-12 sm:px-10">
-      <h1 className="bg-linear-to-r from-zinc-900 to-zinc-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent dark:from-zinc-100 dark:to-zinc-400">
-        HONS
-      </h1>
-      <p className="text-zinc-600 dark:text-zinc-400">
-        Web 画面から Kindle ライブラリ同期を開始し、拡張機能が保存したスナップショットを表示します。
-      </p>
-
-      <SyncControls
+    <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-5 px-4 py-8 sm:px-6 lg:px-8">
+      <Header
         syncStatus={syncStatus}
-        statusText={statusText}
         onStartSync={() => {
           setSyncStatus('syncing');
           requestStartSync();
@@ -119,9 +111,12 @@ export function DashboardClient() {
         onRefreshSnapshot={requestSnapshot}
       />
 
+      <StatusBar syncStatus={syncStatus} statusText={statusText} />
+
       <BooksSection
         snapshot={snapshot}
         books={books}
+        isSyncing={syncStatus === 'syncing'}
         onOpenBook={(book) => {
           const url = resolveBookLink(book);
           if (!url) return;
